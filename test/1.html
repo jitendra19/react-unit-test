@@ -1,0 +1,393 @@
+<link rel="stylesheet" type="text/css" href="app/components/productManagement/css/categoryDevices.css">
+
+<div class="apollo-content" ng-controller="catDeviceDetailController">
+    <div class="apollo-content__main" style="color: #7b7b80;">
+        <div class="container-fluid my-account-page-title-bar hidden-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!--<breadcrumb></breadcrumb>
+                        <h2 class="pull-left">{{deviceId}}</h2>-->
+                        <headerdirective></headerdirective>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" visible-xs top-bar-mobile blue">
+            <a class="button button--icon menu-button pull-left" ng-click="mobileMenu()"> <span class="icon-list-menu"></span>
+            </a> <span class="page-title-mobile">
+                <p>{{deviceId}}</p>
+			</span>
+        </div>
+        
+        <alert-banners success="sucessText" failed="failed" ng-show="showSuccesss"></alert-banners>
+        
+        <div class="container">
+            <app-loaderstatus></app-loaderstatus>
+            <div class="row">
+                <!--Panel title-->
+                <div class="col-lg-5 device-form-title">
+                    
+                    <div class="title-alignment-box">
+                        <h3 class="bottom">Device Details</h3>
+                        <h6 class="bottom-right">
+                            <!--<label class="checkbox" style="margin-bottom: 0;">
+                                <input type="checkbox" name="checkbox1" ng-model="deviceConfig.displayFlag" ng-init="value=false" ng-true-value="true" ng-false-value="false">
+                                <span class="checkbox__input"></span>
+                                <span class="checkbox__label">Publish to product page</span>
+                            </label>-->
+                            <!--Publish to product page-->
+                        </h6>
+                    </div>
+                </div>
+                <div class="col-lg-7 device-form-title">
+                    <div class="title-alignment-box">
+                        <h3 class="bottom">Pricing</h3>
+                    </div>
+                </div>
+            </div>
+            <!--Panel title End-->
+
+            <!--Panel row-->
+            <div class="row">
+                <div class="col-lg-5 ">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                            <div class="panel">
+                                <div class="panel__body device_form">
+                                    <form name="deviceDetails">
+                                        <div class="form-group ">
+                                            <label for="product-name" class="col-lg-3 col-form-label">Product Name</label>
+                                            <div class="col-lg-9">
+                                                <input name="productName" class="form-control" type="text" ng-model="deviceConfig.productName" id="product-name" ng-disabled="isNewDevice[4] !== 'newDevice'" required>
+                                                <span class="validation" ng-show="submitted && deviceDetails.productName.$error.required">Required</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label for="display-name" class="col-lg-3 col-form-label">Display Name</label>
+                                            <div class="col-lg-9">
+                                                <input name="displayName" class="form-control" type="text" ng-model="deviceConfig.displayName" id="display-name" required>
+                                                <span class="validation" ng-show="submitted && deviceDetails.displayName.$error.required">Required</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label for="category" class="col-lg-3 col-form-label">Category</label>
+                                            <div class="col-lg-9">
+                                                <select name="catList" ng-options="selectedCategory.id as selectedCategory.name for selectedCategory in categories" class="form-control"
+                                                    ng-model="selectedCategory" id="category" required>
+                                                        <option>Select</option>
+                                                        <!--<option ng-repeat="cat in categories" value="{{cat.id}}" ng-model="selectedCategory">{{cat.name}}</option>-->
+                                                    </select>
+                                                    <span class="validation" ng-show="submitted && deviceDetails.catList.$error.required">Required</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group " ng-if="false">
+                                            <label for="description" class="col-lg-3 col-form-label">Description</label>
+                                            <div class="col-lg-9">
+                                                <textarea class="form-control" type="text" name="proDesc" ng-model="deviceConfig.description" placeholder="Please provide a brief summary about the device."
+                                                    ng-keydown="maxCharacterInput($event);" id="description" required></textarea>
+                                                    <div ng-show="submitted && deviceDetails.proDesc.$error" style="color:red" role="alert">
+                                                        <div ng-show="deviceDetails.proDesc.$error.required">Required.</div>
+                                                    </div>
+                                            </div>
+                                            <p class="pull-right">{{deviceConfig.description.length}}/200</p>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label for="photo" class="col-lg-3 col-form-label">Photo</label>
+                                            <div class="col-lg-9">
+                                                <!--<div class="overlay" ng-if="deviceConfig.photo === ''">
+                                                    <button ng-click="button.action()" type="button" class="button button--small button--primary">Edit</button>
+                                                    <span style="font-size: 25px;" class="icon-camera"></span>
+                                                    <p>Add a device photo</p>
+                                                </div>
+                                                <div ng-if="deviceConfig.photo !== ''">
+                                                    <input type="file" id="fileInput"  
+                                                        ng-model="uploadedimage" onchange="angular.element(this).scope().onFileSelect()"
+                                                        accept=".jpg,.png,.gif,.jpeg">
+                                                    <img style="height: 150px;" ng-src='{{deviceConfig.photo}}' ng-click="uploadImage()">
+                                                </div>-->
+                                                <label for="file-input" class="fileInputButton button--primary-alt" style="display: none">
+                                                    <span class="icon-add"> </span> Upload Image 
+                                                    <input id="imageSelector" name="photo" accept="image/*"  ng-model="photo" style="display: none" id="file-input" name="file" file-upload type="file" required/>
+                                                    
+                                                </label>
+                                                <!--<img class="imageThumbnail" src="" alt="">-->
+                                                <img class="imageThumbnail showPointer" src="{{deviceConfig.thumbinalUrl}}" err-src="assets/img/Placeholder-device@2x.png" id="deviceTumbnail" ng-click="uploadImage()" >
+                                               
+                                                <div ng-if="showComingSoontag" class="comingSoon">
+                                                    <p style="font-size: 7.8px;margin: 0px;">Coming Soon!</p>
+                                                </div>
+                                                 <div ng-show="showImgValid && submitted && deviceDetails.photo.$error" style="color:red" role="alert">
+                                                    <div ng-show="deviceDetails.photo.$error.required">Required.</div>
+                                                </div>
+                                                <!--Is this Product Coming Soon-->
+                                                <div class="form-group ">
+                                                    <label class="checkbox pull-left" >
+                                                    <input ng-model="deviceConfig.comingSoon" ng-change="showComingSoon()" type="checkbox" ng-true-value="true" ng-false-value="false">
+                                                    <span class="checkbox__input"></span>
+                                                    <span class="checkbox__label">Add Coming Soon Banner</span>
+                                                </label>
+                                                </div>
+                                                <!--<div class="img-thumbnail showPointer">
+                                                        <input ng-hide="true" type="file" id="choose-file" ng-file-select="onFileSelect($files)" ng-click="checkingImage($files)">
+                                                        <img style="max-width: 130px;min-height: 130px;" ng-src="{{deviceConfig.photo}}" alt="" ng-click="image()">
+                                                    </div>-->
+
+
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group ">   
+                                            <label for="product-name" class="col-lg-3 col-form-label">Display Status</label>
+                                            <div class="col-lg-9">
+                                                <select ng-model="deviceConfig.displayFlag" name="displayFalg" required>
+                                                    <option value="true">Publish</option>
+                                                    <option value="false">Unpublish</option>
+                                                </select>
+                                                <span class="validation" ng-show="submitted && deviceDetails.displayFalg.$error.required">Required</span>
+                                            </div>
+                                            
+                                        </div>
+                                    </form>                                    
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-lg-7 device-form-title" style="padding-left:0;">
+                                <div class="title-alignment-box">
+                                    <h3 class="bottom">Enable Accesories</h3>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="panel">
+                                <div class="panel__body device_form">
+                                    <form name="deviceDetails">
+                                        <div class="form-group">
+                                                <div>
+                                                    <label  class="checkbox" style="margin-right: 0px; width: 100%">
+                                                        <input type="checkbox"  ng-model="data.wallMount" name="orderMode_wallMount" ng-true-value="true">
+                                                        <span class="checkbox__input"></span>
+                                                        <span class="checkbox__label">Wall mount</span>
+                                                    </label>
+
+                                                </div>
+                                                <div class="form-group" ng-show="data.wallMount">
+                                                    <label for="display-name" class="col-lg-3 col-form-label">Default price</label>
+                                                    <div class="col-lg-9">
+                                                        <input name="displayName" class="form-control" type="text" id="display-name" required>
+                                                        <span class="validation" ng-show="submitted && deviceDetails.displayName.$error.required">Required</span>
+                                                    </div>
+                                                    <span class="icon-close remove_price"></span>
+                                                </div>
+                                                <div class="form-group" ng-show="data.wallMount">
+                                                    <label for="category" class="col-lg-3 col-form-label">Brazil</label>
+                                                    <div class="col-lg-9">
+                                                            <input name="displayName" class="form-control" type="text" id="display-name" required>
+                                                            <span class="validation" ng-show="submitted && deviceDetails.catList.$error.required">Required</span>
+                                                    </div>
+                                                    <span class="icon-close remove_price" style="margin: 7px 0px 0px 1px;"></span>
+                                                </div>
+                                                <div class="form-group" ng-show="data.wallMount">
+                                                    <label for="display-name" class="col-lg-3 col-form-label">Chile</label>
+                                                    <div class="col-lg-9">
+                                                        <input name="displayName" class="form-control" type="text" id="display-name" required>
+                                                        <span class="validation" ng-show="submitted && deviceDetails.displayName.$error.required">Required</span>
+                                                    </div>
+                                                    <span class="icon-close remove_price" style="margin: 7px 0px 0px 1px;"></span>
+                                                </div>
+
+                                                <div class="form-group col-lg-12" ng-show="data.wallMount"> 
+                                                    <div class="row">  
+                                                        <label for="product-name" class="col-lg-6 col-form-label">Country</label>
+                                                        <label for="product-name" class="col-lg-6 col-form-label">Price</label>
+                                                    </div>
+                                                    <div class="row">                                                        
+                                                        <div class="col-lg-4">
+                                                        <select ng-model="deviceConfig.displayFlag" name="displayFalg" required>
+                                                                <option value="true"></option>
+                                                                <option value="false"></option>
+                                                            </select>
+                                                            <span class="validation" ng-show="submitted && deviceDetails.displayFalg.$error.required">Required</span>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                                <input name="displayName" class="form-control" type="text" id="display-name" required>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <a name="Add to list" type="text">Add to list</a>
+                                                            </div>
+                                                    </div>
+                                                </div>
+
+                                        </div>                                        
+                                                                    
+                                        <div class="form-group ">
+                                                <label  class="col-lg-6 checkbox" style="margin-right: 0px">
+                                                        <input type="checkbox"  ng-model="data.personal" name="orderMode_personal" ng-true-value="PERSONAL">
+                                                        <span class="checkbox__input"></span>
+                                                        <span class="checkbox__label">Floor stand</span>
+                                                    </label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7" style="padding: 0;">
+                    <div class="col-lg-6 category-title">
+                        <!--<div class="row cat-sortable" >-->
+                        <!--<div class="col-lg-12" >-->
+                        <div class="panel ">
+                            <div class="panel__body device_form">
+                                <form name="productOrderingDetails" ng-class="{'form-validate':submitted}">
+                                    <!--Asking if product can be orders or not-->
+                                    <div class="form-group ">
+                                        <label class="col-lg-12 col-form-label">Can the product be ordered?</label>
+                                        <div class="col-lg-12">
+                                            <label class="col-lg-6">
+                                                <input class="" type="radio" name="isOrder" value="true"   data-ng-model="deviceConfig.isProductOrdered" required>
+                                                    <span class="radio-option-data">Yes</span> 
+                                            </label>
+                                            <label class="col-lg-6">
+                                                <input class="" type="radio" name="isOrder"  value="false"   data-ng-model="deviceConfig.isProductOrdered"required >
+                                                    <span class="radio-option-data">No</span>
+                                            </label>
+                                                <div ng-show="submitted && productOrderingDetails.isOrder.$error.required" style="color: red">This field is required.</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!--Product Using Mode-->
+                                    <div class="form-group">
+                                        <label class="col-lg-12 col-form-label">Device Ordering Mode</label>
+                                        <div>
+                                            <label  class="col-lg-6 checkbox" style="margin-right: 0px">
+                                                <input type="checkbox"  ng-model="data.personal" name="orderMode_personal" ng-true-value="PERSONAL">
+                                                <span class="checkbox__input"></span>
+                                                <span class="checkbox__label">Personal</span>
+                                            </label>
+                                            <label class="col-lg-6 checkbox">
+                                                <input  type="checkbox" ng-model="data.shared"  name="orderMode_shared" ng-true-value="SHARED">
+                                                <span class="checkbox__input"></span>
+                                                <span class="checkbox__label">Shared</span>
+                                            </label>
+                                            <span class="validation" ng-show="submitted && (!data.personal && !data.shared)">Required</span>
+                                            <!--<label class="col-lg-6"> 
+                                                <input type="radio" ng-model="deviceConfig.orderType" name="orderMode" value="BOTH">
+                                                <span class="radio-option-data">Both</span>
+                                            </label>-->
+                                            <!--<span class="validation" ng-show="submitted && productOrderingDetails.ordermode.$error.required">Required</span>-->
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group " ng-if="deviceConfig.isProductOrdered">
+                                        <label for="default-price" class="col-lg-5 col-form-label">Default Price</label>
+                                        <div class="col-lg-7" style="padding-right: 0; ">
+                                            <input class="form-control" name="default_price" type="text" id="default-price"  ng-model="defaultpriceObj.defaultPrice" placeholder="USD" style="text-align: right;" required="required"/>
+                                            <!--{{hardwareCost}}-->
+                                            <div ng-show="submitted && deviceConfig.isProductOrdered &&productOrderingDetails.default_price.$error" style="color:red" role="alert">
+                                                <div ng-show="productOrderingDetails.default_price.$error.required">This field is required.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group " ng-repeat="cost in tempSelectedCountry" style="margin:0; padding-bottom: 10px" ng-if="deviceConfig.isProductOrdered || cost.countryCode!='000'">
+                                        <label for="default-price" style="color: #9e9ea2" class="col-lg-5 col-form-label">{{cost.countryName}}</label>
+                                        <div class="col-lg-7" style="padding-right: 0; ">
+                                            <!--test<span>{{cost.countryPrice}}</span>-->
+                                            <input class="form-control" type="text" ng-model="cost.countryPrice" ng-blur="priceChange(cost.countryCode,cost.countryPrice)" placeholder="USD"
+                                                style="text-align: right;" ng-class="{pricevalidation:!cost.countryPrice}">
+                                            <!--<p class="pull-right" >${{cost.price}}</span>-->
+                                            <span class="icon-close remove_price" ng-click="removePrice($index)"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-left: 0; padding-right: 0;" ng-if="deviceConfig.isProductOrdered" ng-value="deviceConfig.catergory">
+                                        <div class="row" style="margin:0">
+                                            <div class="col-lg-1 divider"></div>
+                                            <label class="col-lg-9 col-form-label text-center">Add country exceptions</label>
+                                            <div class="col-lg-1 divider pull-right"></div>
+                                        </div>
+                                        
+                                        <div class="col-lg-8 col-lg issue-dropdown-container">
+                                            <div class="form-group bg-color  no-border">
+                                                <div class="form-group__text select issue-dropdown">
+                                                    <select class="dropdown form-control" id="countrySearch" ng-options="selectedCountry.countryCode as selectedCountry.countryName for selectedCountry in countryList  "
+                                                        ng-model="selectedCountry" ng-change="enableAdd(selectedCountry)" name="issueCategory">
+                                                                    <!--<option >Search for country</option>-->
+                                                        <option >select the country</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" ng-disabled="noCountry" ng-click="addCountryToConfig(selectedCountry)" class="pull-right button-square button button--small button--primary">Add</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                     <form name="productOrderingPrices">
+                    <div class="col-lg-6 category-title" ng-if="deviceConfig.isProductOrdered">
+                        <div class="row cat-sortable">
+                            <div class="col-lg-12">
+                                <div class="panel ">
+                                    <div class="panel__body device_form">
+                                       
+                                            <div class="form-group ">
+                                                <label for="default-price" class="col-lg-5 col-form-label">Quarterly Support Cost</label>
+                                                <div class="col-lg-7">
+                                                    <input class="form-control" name="qtaCost" type="text" id="default-price" ng-model="deviceConfig.quarterlySupportCost" placeholder="USD"
+                                                        style="text-align: right;" required>
+                                                        <div ng-show="submitted && deviceConfig.isProductOrdered &&productOrderingDetails.default_price.$error" style="color:red" role="alert">
+                                                            <div ng-show="productOrderingPrices.qtaCost.$error.required">Required.</div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="default-price" class="col-lg-5 col-form-label">PDI Cost</label>
+                                                <div class="col-lg-7">
+                                                    <input class="form-control" name="pdiCost" type="text" id="default-price" ng-model="deviceConfig.pdiCost" placeholder="USD" style="text-align: right;" required>
+                                                    <div ng-show="submitted && deviceConfig.isProductOrdered &&productOrderingDetails.default_price.$error" style="color:red" role="alert">
+                                                        <div ng-show="productOrderingPrices.pdiCost.$error.required">Required.</div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="default-price" class="col-lg-5 col-form-label">Installation Cost</label>
+                                                <div class="col-lg-7">
+                                                    <input class="form-control" name="instCost" type="text" id="default-price" ng-model="deviceConfig.installationCost" placeholder="USD" style="text-align: right;" required>
+                                                    <div ng-show="submitted && deviceConfig.isProductOrdered &&productOrderingDetails.default_price.$error" style="color:red" role="alert">
+                                                        <div ng-show="productOrderingPrices.instCost.$error.required">Required.</div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <!--Panel row End-->
+
+            <br>
+
+            <!--Buttons row-->
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-4 add-category-button">
+                                                                
+                    <a type="button" class="button button--small button--tertiary" ng-href="#/admin/productCategory/CategoryDeviceList/{{currCatObj.id}}/{{currCatObj.name}}">Cancel</a>
+                    <button type="button" ng-if="showSectionButton" class="button button--small button--primary" ng-click="editProductSections({{shortCode}});" ng-disabled="navigateToEdit || currentExistingProdData.adminAttributes.length < 1">Edit Product</button>
+                    <button type="button" class="button button--small button--primary" ng-click="submitted=true;createNewProduct();">Save</button>
+                </div>
+            </div>
+            <!--Buttons row end-->
+        </div>
+    </div>
+</div>
